@@ -3,7 +3,6 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 body {
@@ -17,6 +16,8 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
     -moz-user-select: none;
+    /* 画面全体のスクロールを可能にする */
+    overflow-y: auto;
 }
 
 /* 画面共通スタイル */
@@ -32,7 +33,7 @@ body {
     transition: opacity 1s ease-in-out;
     opacity: 0;
     visibility: hidden;
-    overflow: hidden;
+    flex-direction: column;
 }
 
 .screen.active {
@@ -40,13 +41,14 @@ body {
     visibility: visible;
 }
 
-/* オープニング画面 - 大幅に強化 */
+/* オープニング画面 */
 #opening-screen {
-    flex-direction: column;
     background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0a0a0a);
     color: #fff;
     position: relative;
-    overflow: hidden;
+    /* コンテンツが画面に収まらない場合でもスクロール可能に */
+    height: auto;
+    min-height: 100vh;
 }
 
 /* 背景エフェクト（パーティクル風） */
@@ -75,10 +77,7 @@ body {
 .opening-content {
     text-align: center;
     z-index: 10;
-    position: absolute; /* 絶対配置に変更 */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* 中央寄せの定番テクニック */
+    position: relative;
     padding: 2vh 5vw;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.3);
