@@ -75,10 +75,7 @@ body {
 .opening-content {
     text-align: center;
     z-index: 10;
-    position: absolute; /* 親要素の中央に絶対配置 */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     padding: 2vh 5vw;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.3);
