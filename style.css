@@ -75,7 +75,10 @@ body {
 .opening-content {
     text-align: center;
     z-index: 10;
-    position: relative;
+    position: absolute; /* 絶対配置に変更 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 中央寄せの定番テクニック */
     padding: 2vh 5vw;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.3);
