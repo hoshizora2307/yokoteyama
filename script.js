@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openingScreen = document.getElementById('opening-screen');
     const gameScreen = document.getElementById('game-screen');
     const startButton = document.getElementById('start-button');
+    const gameBGM = document.getElementById('game-bgm');
     
     // ゲームキャンバス関連のコード
     const canvas = document.getElementById('gameCanvas');
@@ -100,6 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
         openingScreen.classList.remove('active');
         gameScreen.classList.add('active');
         gameLoop(); // ゲームループを開始
+
+        // BGMを再生
+        gameBGM.play();
     });
     
     // 初期表示：オープニング画面をアクティブに
