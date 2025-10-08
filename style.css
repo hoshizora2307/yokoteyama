@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* 画面全体のスクロールを無効化 */
+    overflow: hidden;
 }
 
 body {
@@ -32,7 +32,7 @@ body {
     transition: opacity 1s ease-in-out;
     opacity: 0;
     visibility: hidden;
-    overflow: hidden; /* 各画面内でのスクロールも無効化 */
+    overflow: hidden;
 }
 
 .screen.active {
@@ -75,7 +75,10 @@ body {
 .opening-content {
     text-align: center;
     z-index: 10;
-    position: relative;
+    position: absolute; /* 親要素の中央に絶対配置 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 2vh 5vw;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.3);
