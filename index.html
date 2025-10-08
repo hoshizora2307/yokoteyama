@@ -19,7 +19,8 @@
             <h1>横手山2307</h1>
             <h2>- 時を超えし冒険者 -</h2>
             <div class="credits">
-                <p>プログラム：hoshizora2307</                <p>総指揮：高瀬 敏行</p>
+                <p>プログラム：hoshizora2307</p>
+                <p>総指揮：高瀬 敏行</p>
                 <p>監修：志歩</p>
                 <p>著作権：株式会社S＆T観光開発</p>
             </div>
@@ -30,6 +31,10 @@
     <div id="game-screen" class="screen">
         <div class="game-container">
             <canvas id="gameCanvas"></canvas>
+            <div id="status-panel">
+                <p>Lv: <span id="player-level">1</span></p>
+                <p>XP: <span id="player-exp">0</span> / <span id="player-max-exp">100</span></p>
+            </div>
             <div class="controls">
                 <button id="attack-button">攻撃</button>
                 <button id="jump-button">ジャンプ</button>
