@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerMaxExpDisplay = document.getElementById('player-max-exp');
     const levelUpPopup = document.getElementById('level-up-popup');
     const levelUpNumber = document.getElementById('level-up-number');
-    
+
     const playerImage = new Image();
     playerImage.src = 'takase02.png';
     let assetsLoaded = false; 
@@ -84,11 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
         player.attackPower++;
         player.jumpPower += 0.1;
 
-        // ポップアップを表示
         levelUpNumber.textContent = player.level;
         levelUpPopup.classList.add('visible');
         
-        // 2秒後にポップアップを非表示にする
         setTimeout(() => {
             levelUpPopup.classList.remove('visible');
         }, 2000);
