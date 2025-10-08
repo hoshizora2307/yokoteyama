@@ -22,24 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const helperImage = new Image();
     helperImage.src = 'saisu01.png';
 
-    let assetsLoadedCount = 0;
-    const totalAssets = 2; // playerImageとhelperImage
-
-    function assetLoaded() {
-        assetsLoadedCount++;
-        if (assetsLoadedCount === totalAssets) {
-            assetsLoaded = true;
-            if (gameScreen.classList.contains('active')) {
-                gameLoop(); // ゲーム画面が既にアクティブならゲーム開始
-            }
-        }
-    }
-
-    playerImage.onload = assetLoaded;
-    playerImage.onerror = () => { console.error("Failed to load player image: takase02.png"); assetLoaded(); };
-    helperImage.onload = assetLoaded;
-    helperImage.onerror = () => { console.error("Failed to load helper image: saisu01.png"); assetLoaded(); };
-
+    let assetsLoaded = false; 
 
     // 画面サイズに合わせてキャンバスを調整
     function resizeCanvas() {
@@ -95,9 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
         isVisible: false,
         displayTimer: 0,
         respawnTimer: 0,
-        initialRespawnTime: 60 * 60 // 60秒 * 60フレーム/秒 = 3600フレーム
+        initialRespawnTime: 60 * 60
     };
-    // 初期の出現タイマーを設定
     helper.respawnTimer = helper.initialRespawnTime;
 
 
@@ -212,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (helper.displayTimer <= 0) {
                 helper.isVisible = false;
                 player.isInvincible = false;
-                helper.respawnTimer = helper.initialRespawnTime + Math.random() * 60 * 30; // 次の出現まで30秒のランダム幅を追加
+                helper.respawnTimer = helper.initialRespawnTime + Math.random() * 60 * 30;
             } else {
                 player.isInvincible = true;
                 player.flickerTimer++;
@@ -241,14 +223,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = '#4682b4';
         ctx.fillRect(0, gameCanvas.height - 10, gameCanvas.width, 10);
         
-        if (assetsLoaded) {
-            if (player.isInvincible && Math.floor(player.flickerTimer / 5) % 2 === 0) {
-            } else {
-                ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
-            }
+        // プレイヤーを描画
+        if (player.isInvincible && Math.floor(player.flickerTimer / 5) % 2 === 0) {
         } else {
-            ctx.fillStyle = '#ff6347';
-            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
         }
         
         if (player.isAttacking) {
@@ -258,7 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText('⭐', player.x + player.width + 5, player.y + player.height / 2);
         }
 
-        if (helper.isVisible && assetsLoaded) {
+        // お助けキャラを描画
+        if (helper.isVisible) {
             ctx.drawImage(helperImage, helper.x, helper.y, helper.width, helper.height);
         }
     }
@@ -272,12 +251,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // スタートボタンのイベントリスナー
     startButton.addEventListener('click', () => {
+        // 画面を即座に切り替え
         openingScreen.classList.remove('active');
         gameScreen.classList.add('active');
-        if (assetsLoaded) {
-            gameLoop(); 
-        }
+
+        // ゲームループを開始
+        gameLoop(); 
         
+        // BGMを切り替える
         openingBGM.pause();
         gameBGM.play();
     });
@@ -289,5 +270,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { once: true });
     
+    // 画面ロード時にアセットを読み込み
+    playerImage.onload = () => {
+        console.log("Player image loaded.");
+    };
+    playerImage.onerror = () => {
+        console.error("Failed to load player image: takase02.png");
+    };
+    helperImage.onload = () => {
+        console.log("Helper image loaded.");
+    };
+    helperImage.onerror = () => {
+        console.error("Failed to load helper image: saisu01.png");
+    };
+
     openingScreen.classList.add('active');
 });
