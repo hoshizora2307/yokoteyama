@@ -1,13 +1,18 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* 画面全体のスクロールを無効化 */
+}
+
 body {
     background-color: #111;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
     font-family: sans-serif;
     color: #eee;
-    overflow: hidden;
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -27,6 +32,7 @@ body {
     transition: opacity 1s ease-in-out;
     opacity: 0;
     visibility: hidden;
+    overflow: hidden; /* 各画面内でのスクロールも無効化 */
 }
 
 .screen.active {
@@ -70,7 +76,7 @@ body {
     text-align: center;
     z-index: 10;
     position: relative;
-    padding: 20px;
+    padding: 2vh 5vw; /* パディングを相対単位に変更 */
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 30px rgba(255, 99, 71, 0.3);
@@ -78,24 +84,24 @@ body {
 
 h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 4.5em;
+    font-size: 8vw; /* フォントサイズをvwに変更 */
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     color: #ff6347;
     text-shadow: 0 0 15px #ff6347, 0 0 30px #ff6347;
-    letter-spacing: 3px;
+    letter-spacing: 0.5vw;
     animation: glitch 1.5s infinite alternate;
 }
 
 h2 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.8em;
+    font-size: 4vw; /* フォントサイズをvwに変更 */
     font-weight: 400;
     margin-top: 0;
     color: #ffa07a;
     text-shadow: 0 0 8px #ffa07a;
-    letter-spacing: 1px;
-    margin-bottom: 40px;
+    letter-spacing: 0.2vw;
+    margin-bottom: 4vh;
 }
 
 /* グリッチアニメーションのキーフレーム */
@@ -110,8 +116,8 @@ h2 {
 
 
 .credits {
-    margin: 30px 0;
-    font-size: 0.8em;
+    margin: 3vh 0;
+    font-size: 2.5vw;
     line-height: 1.6;
     color: #a0a0a0;
     letter-spacing: 0.5px;
@@ -121,12 +127,12 @@ h2 {
     background-color: #ff6347;
     border: 2px solid #ff6347;
     color: white;
-    padding: 18px 50px;
-    font-size: 1.5em;
+    padding: 2.5vh 8vw;
+    font-size: 4vw;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 50px;
+    margin-top: 5vh;
     box-shadow: 0 0 15px rgba(255, 99, 71, 0.7);
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 2px;
@@ -148,14 +154,14 @@ h2 {
 
 #status-panel {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 1vh;
+    left: 1vw;
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
+    padding: 1.5vh 2vw;
     border-radius: 8px;
     font-family: 'Orbitron', sans-serif;
     color: #fff;
-    font-size: 0.9em;
+    font-size: 2.5vw;
     z-index: 20;
 }
 
@@ -184,7 +190,7 @@ h2 {
     opacity: 0;
     transition: all 0.5s ease-in-out;
     z-index: 50;
-    pointer-events: none; /* クリックを透過させる */
+    pointer-events: none;
 }
 
 #level-up-popup.visible {
@@ -194,12 +200,12 @@ h2 {
 
 #level-up-popup p {
     margin: 0;
-    font-size: 2em;
+    font-size: 4vh;
     text-shadow: 0 0 10px #ffea00;
 }
 
 #level-up-number {
-    font-size: 3em;
+    font-size: 6vh;
     color: #ffea00;
 }
 
@@ -221,20 +227,20 @@ canvas {
 
 .controls {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 2vh;
+    right: 2vw;
     display: flex;
-    gap: 15px;
+    gap: 1.5vh;
 }
 
 .controls button {
     background-color: #ff6347;
     border: none;
     color: white;
-    width: 80px;
-    height: 80px;
+    width: 15vw;
+    height: 15vw;
     border-radius: 50%;
-    font-size: 1.2em;
+    font-size: 2.5vw;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s;
     cursor: pointer;
