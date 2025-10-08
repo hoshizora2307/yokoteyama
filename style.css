@@ -42,7 +42,10 @@ body {
 
 /* オープニング画面 - 大幅に強化 */
 #opening-screen {
+    display: flex; /* Flexboxを再適用 */
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0a0a0a);
     color: #fff;
     position: relative;
@@ -80,7 +83,6 @@ body {
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 30px rgba(255, 99, 71, 0.3);
-    margin: auto; /* ここが修正点 */
 }
 
 h1 {
