@@ -8,10 +8,10 @@ body {
     font-family: sans-serif;
     color: #eee;
     overflow: hidden;
-    user-select: none; /* テキスト選択を無効化 */
-    -webkit-user-select: none; /* iOS Safari */
-    -ms-user-select: none; /* IE10+ */
-    -moz-user-select: none; /* Firefox */
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
 }
 
 /* 画面共通スタイル */
@@ -46,15 +46,21 @@ body {
 }
 
 h1 {
+    font-family: 'Orbitron', sans-serif;
     font-size: 3em;
+    font-weight: 700;
     margin-bottom: 5px;
     color: #ff6347;
+    text-shadow: 0 0 10px #ff6347, 0 0 20px #ff6347;
 }
 
 h2 {
+    font-family: 'Orbitron', sans-serif;
     font-size: 1.5em;
+    font-weight: 400;
     margin-top: 0;
     color: #ffa07a;
+    text-shadow: 0 0 5px #ffa07a;
 }
 
 .credits {
