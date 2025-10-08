@@ -76,7 +76,7 @@ body {
     text-align: center;
     z-index: 10;
     position: relative;
-    padding: 2vh 5vw; /* パディングを相対単位に変更 */
+    padding: 2vh 5vw;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 30px rgba(255, 99, 71, 0.3);
@@ -84,7 +84,7 @@ body {
 
 h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 8vw; /* フォントサイズをvwに変更 */
+    font-size: 8vw;
     font-weight: 700;
     margin-bottom: 5px;
     color: #ff6347;
@@ -95,7 +95,7 @@ h1 {
 
 h2 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 4vw; /* フォントサイズをvwに変更 */
+    font-size: 4vw;
     font-weight: 400;
     margin-top: 0;
     color: #ffa07a;
