@@ -22,8 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const helperImage = new Image();
     helperImage.src = 'saisu01.png';
 
-    let assetsLoaded = false; 
-
     // 画面サイズに合わせてキャンバスを調整
     function resizeCanvas() {
         const aspectRatio = 800 / 400;
@@ -223,7 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = '#4682b4';
         ctx.fillRect(0, gameCanvas.height - 10, gameCanvas.width, 10);
         
-        // プレイヤーを描画
         if (player.isInvincible && Math.floor(player.flickerTimer / 5) % 2 === 0) {
         } else {
             ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
@@ -236,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText('⭐', player.x + player.width + 5, player.y + player.height / 2);
         }
 
-        // お助けキャラを描画
         if (helper.isVisible) {
             ctx.drawImage(helperImage, helper.x, helper.y, helper.width, helper.height);
         }
@@ -255,12 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
         openingScreen.classList.remove('active');
         gameScreen.classList.add('active');
 
-        // ゲームループを開始
-        gameLoop(); 
-        
         // BGMを切り替える
         openingBGM.pause();
         gameBGM.play();
+        
+        // ゲームループを開始
+        gameLoop(); 
     });
 
     // ユーザーの最初の操作でBGMを再生
