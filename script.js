@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         height: 40,
         velocityY: 0,
         isJumping: false,
-        isAttacking: false, // 攻撃中かどうかの状態
+        isAttacking: false,
         attackTimer: 0,
         speed: 5
     };
@@ -144,10 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillRect(player.x, player.y, player.width, player.height);
         }
         
-        // 攻撃中の描画
+        // 攻撃中の描画 (星マーク)
         if (player.isAttacking) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.fillRect(player.x + player.width, player.y, 20, player.height);
+            ctx.font = `${player.height * 0.8}px Arial`; // フォントサイズをプレイヤーの高さに合わせる
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('⭐', player.x + player.width + 5, player.y + player.height / 2);
         }
     }
 
