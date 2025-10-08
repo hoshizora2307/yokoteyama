@@ -1,0 +1,102 @@
+body {
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    color: #eee;
+    overflow: hidden;
+}
+
+/* 画面共通スタイル */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* オープニング画面 */
+#opening-screen {
+    flex-direction: column;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.opening-content {
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 5px;
+    color: #ff6347;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 0;
+    color: #ffa07a;
+}
+
+.credits {
+    margin: 20px 0;
+    font-size: 0.9em;
+    line-height: 1.5;
+    color: #ccc;
+}
+
+#start-button {
+    background-color: #ff6347;
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 30px;
+}
+
+#start-button:hover {
+    background-color: #e5533d;
+}
+
+/* ゲーム画面 */
+#game-screen {
+    flex-direction: column;
+    background-color: #333;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas {
+    border: 2px solid #fff;
+    background-color: #5c628f;
+}
+
+.info-panel {
+    margin-top: 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
