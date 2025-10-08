@@ -7,15 +7,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <canvas id="gameCanvas"></canvas>
-        <div class="info-panel">
-            <h2>横手山2307</h2>
-            <p>移動: AD or ←→</p>
-            <p>ジャンプ: Space</p>
-            <p>時を操り、失われた記憶を探し出せ！</p>
+
+    <div id="opening-screen" class="screen active">
+        <div class="opening-content">
+            <h1>横手山2307</h1>
+            <h2>- 時を超えし冒険者 -</h2>
+            <div class="credits">
+                <p>プログラム：hoshizora2307</p>
+                <p>総指揮：高瀬 敏行</p>
+                <p>監修：志歩</p>
+                <p>著作権：株式会社S＆T観光開発</p>
+            </div>
+            <button id="start-button">スタート</button>
         </div>
     </div>
+
+    <div id="game-screen" class="screen">
+        <div class="game-container">
+            <canvas id="gameCanvas"></canvas>
+            <div class="info-panel">
+                <h3>操作方法</h3>
+                <p>移動: AD or ←→</p>
+                <p>ジャンプ: Space</p>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
