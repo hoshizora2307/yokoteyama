@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameCanvas = document.getElementById('gameCanvas');
     const ctx = gameCanvas.getContext('2d');
     
+    // プレイヤー画像
+    const playerImage = new Image();
+    playerImage.src = 'takase02.png';
+    // 画像が読み込まれるまでゲームループを開始しないようにするためのフラグ
+    let assetsLoaded = false; 
+
     // 画面サイズに合わせてキャンバスを調整
     function resizeCanvas() {
         const aspectRatio = 800 / 400; // ゲームの理想的な縦横比
@@ -38,10 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // プレイヤーオブジェクト
     const player = {
         x: gameCanvas.width / 5,
-        y: gameCanvas.height - 50,
-        width: 30,
-        height: 30,
-        color: '#ff6347',
+        y: gameCanvas.height - 50, // 初期位置は地面から少し上
+        width: 40, // 画像に合わせて調整
+        height: 40, // 画像に合わせて調整
         velocityY: 0,
         isJumping: false,
         speed: 5
@@ -121,9 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = '#4682b4';
         ctx.fillRect(0, gameCanvas.height - 10, gameCanvas.width, 10);
         
-        // プレイヤーを描画
-        ctx.fillStyle = player.color;
-        ctx.fillRect(player.x, player.y, player.width, player.height);
+        // プレイヤーを描画 (画像)
+        if (assetsLoaded) { // 画像が読み込まれていれば描画
+            ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+        } else { // 読み込み中は仮の四角形を描画
+            ctx.fillStyle = '#ff6347';
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
     }
 
     // ゲームループ
@@ -137,7 +146,15 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
         openingScreen.classList.remove('active');
         gameScreen.classList.add('active');
-        gameLoop(); // ゲームループを開始
+        if (assetsLoaded) { // アセットが読み込まれてからゲームを開始
+            gameLoop(); 
+        } else {
+            // アセット読み込み中であれば、読み込み完了後にゲームループ開始
+            playerImage.onload = () => {
+                assetsLoaded = true;
+                gameLoop();
+            };
+        }
         
         // BGMを切り替える
         openingBGM.pause();
@@ -152,6 +169,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { once: true });
     
+    // 画像が読み込まれたらフラグを立てる
+    playerImage.onload = () => {
+        assetsLoaded = true;
+        // もしすでにゲーム画面がアクティブなら、描画を更新するために一度描画を呼び出す
+        if (gameScreen.classList.contains('active')) {
+            draw(); 
+        }
+    };
+    playerImage.onerror = () => {
+        console.error("Failed to load player image: takase02.png");
+        // 画像読み込み失敗時も、ゲームは進行させるためフラグをtrueに
+        assetsLoaded = true;
+    };
+
     // 初期表示：オープニング画面をアクティブに
     openingScreen.classList.add('active');
 });
