@@ -1,5 +1,5 @@
 body {
-    background-color: #111; /* 全体の背景をより暗く */
+    background-color: #111;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,7 +37,7 @@ body {
 /* オープニング画面 - 大幅に強化 */
 #opening-screen {
     flex-direction: column;
-    background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0a0a0a); /* グラデーション背景 */
+    background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0a0a0a);
     color: #fff;
     position: relative;
     overflow: hidden;
@@ -53,7 +53,7 @@ body {
     height: 100%;
     background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
-    animation: moveGrid 30s linear infinite; /* 背景をゆっくり動かす */
+    animation: moveGrid 30s linear infinite;
 }
 
 @keyframes moveGrid {
@@ -68,34 +68,34 @@ body {
 
 .opening-content {
     text-align: center;
-    z-index: 10; /* 他の要素より手前に表示 */
+    z-index: 10;
     position: relative;
     padding: 20px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.3); /* 半透明の背景で視認性向上 */
-    box-shadow: 0 0 30px rgba(255, 99, 71, 0.3); /* ネオンシャドウ */
+    background-color: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 30px rgba(255, 99, 71, 0.3);
 }
 
 h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 4.5em; /* タイトルを大きく */
+    font-size: 4.5em;
     font-weight: 700;
     margin-bottom: 10px;
     color: #ff6347;
-    text-shadow: 0 0 15px #ff6347, 0 0 30px #ff6347; /* シャドウを強く */
-    letter-spacing: 3px; /* 文字間隔 */
-    animation: glitch 1.5s infinite alternate; /* グリッチアニメーション */
+    text-shadow: 0 0 15px #ff6347, 0 0 30px #ff6347;
+    letter-spacing: 3px;
+    animation: glitch 1.5s infinite alternate;
 }
 
 h2 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.8em; /* サブタイトルも大きく */
+    font-size: 1.8em;
     font-weight: 400;
     margin-top: 0;
     color: #ffa07a;
     text-shadow: 0 0 8px #ffa07a;
     letter-spacing: 1px;
-    margin-bottom: 40px; /* クレジットとの間隔を空ける */
+    margin-bottom: 40px;
 }
 
 /* グリッチアニメーションのキーフレーム */
@@ -110,39 +110,61 @@ h2 {
 
 
 .credits {
-    margin: 30px 0; /* マージンを調整 */
-    font-size: 0.8em; /* フォントサイズを小さくして邪魔にならないように */
+    margin: 30px 0;
+    font-size: 0.8em;
     line-height: 1.6;
-    color: #a0a0a0; /* クレジットの色を落ち着かせる */
+    color: #a0a0a0;
     letter-spacing: 0.5px;
 }
 
 #start-button {
     background-color: #ff6347;
-    border: 2px solid #ff6347; /* ボーダーを追加 */
+    border: 2px solid #ff6347;
     color: white;
-    padding: 18px 50px; /* パディングを増やす */
-    font-size: 1.5em; /* フォントサイズを大きく */
-    border-radius: 8px; /* 角を丸く */
+    padding: 18px 50px;
+    font-size: 1.5em;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease; /* ホバーアニメーションを滑らかに */
-    margin-top: 50px; /* 上のマージンを増やす */
-    box-shadow: 0 0 15px rgba(255, 99, 71, 0.7); /* 強めのネオンシャドウ */
-    font-family: 'Orbitron', sans-serif; /* フォントをOrbitronに */
+    transition: all 0.3s ease;
+    margin-top: 50px;
+    box-shadow: 0 0 15px rgba(255, 99, 71, 0.7);
+    font-family: 'Orbitron', sans-serif;
     letter-spacing: 2px;
 }
 
 #start-button:hover {
     background-color: #e5533d;
     border-color: #e5533d;
-    transform: scale(1.05); /* 拡大アニメーション */
-    box-shadow: 0 0 25px rgba(255, 99, 71, 0.9); /* ホバー時にシャドウを強く */
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 99, 71, 0.9);
 }
 
 /* ゲーム画面 */
 #game-screen {
     flex-direction: column;
     background-color: #333;
+    position: relative; /* 子要素を配置するため */
+}
+
+#status-panel {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    font-size: 0.9em;
+    z-index: 20;
+}
+
+#status-panel p {
+    margin: 5px 0;
+}
+
+#status-panel span {
+    color: #ffea00;
 }
 
 .game-container {
