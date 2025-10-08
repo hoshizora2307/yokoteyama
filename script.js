@@ -82,20 +82,20 @@ document.addEventListener('DOMContentLoaded', () => {
         maxExp: 100,
         attackPower: 1,
         jumpPower: 1,
-        isInvincible: false, // 無敵状態
-        flickerTimer: 0 // 点滅アニメーション用
+        isInvincible: false,
+        flickerTimer: 0
     };
 
     // お助けキャラオブジェクト
     const helper = {
         x: 0,
         y: 0,
-        width: 30, // お助けキャラのサイズ
+        width: 30,
         height: 30,
         isVisible: false,
-        displayTimer: 0, // 表示時間
-        respawnTimer: 0, // 次の出現までの時間
-        initialRespawnTime: 10 * 60 // 10秒 * 60フレーム/秒 (仮定)
+        displayTimer: 0,
+        respawnTimer: 0,
+        initialRespawnTime: 60 * 60 // 60秒 * 60フレーム/秒 = 3600フレーム
     };
     // 初期の出現タイマーを設定
     helper.respawnTimer = helper.initialRespawnTime;
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             player.isAttacking = true;
             player.attackTimer = 15;
             
-            player.exp += 20; // 攻撃時に仮の経験値
+            player.exp += 20;
             if (player.exp >= player.maxExp) {
                 levelUp();
             }
@@ -211,24 +211,22 @@ document.addEventListener('DOMContentLoaded', () => {
             helper.displayTimer--;
             if (helper.displayTimer <= 0) {
                 helper.isVisible = false;
-                player.isInvincible = false; // 無敵解除
-                helper.respawnTimer = helper.initialRespawnTime + Math.random() * 60 * 5; // 次の出現まで5秒のランダム幅
+                player.isInvincible = false;
+                helper.respawnTimer = helper.initialRespawnTime + Math.random() * 60 * 30; // 次の出現まで30秒のランダム幅を追加
             } else {
-                // お助けキャラが表示されている間、プレイヤーを無敵にする
                 player.isInvincible = true;
-                player.flickerTimer++; // 点滅用タイマー
+                player.flickerTimer++;
             }
         } else {
             helper.respawnTimer--;
             if (helper.respawnTimer <= 0) {
                 helper.isVisible = true;
-                helper.displayTimer = 60 * 1.5; // 1.5秒表示 (90フレーム)
-                // プレイヤーの近くにランダムに出現
+                helper.displayTimer = 60 * 1.5;
                 helper.x = player.x + (Math.random() * player.width * 2) - (player.width / 2);
                 helper.y = player.y - (Math.random() * player.height) - helper.height;
-                if (helper.y < 0) helper.y = 0; // 画面上端を超えないように
-                if (helper.x < 0) helper.x = 0; // 画面左端を超えないように
-                if (helper.x + helper.width > gameCanvas.width) helper.x = gameCanvas.width - helper.width; // 画面右端を超えないように
+                if (helper.y < 0) helper.y = 0;
+                if (helper.x < 0) helper.x = 0;
+                if (helper.x + helper.width > gameCanvas.width) helper.x = gameCanvas.width - helper.width;
             }
         }
 
@@ -243,10 +241,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = '#4682b4';
         ctx.fillRect(0, gameCanvas.height - 10, gameCanvas.width, 10);
         
-        // プレイヤーを描画 (無敵中は点滅)
         if (assetsLoaded) {
             if (player.isInvincible && Math.floor(player.flickerTimer / 5) % 2 === 0) {
-                // 無敵中は5フレームごとに描画をスキップして点滅させる
             } else {
                 ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
             }
@@ -262,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText('⭐', player.x + player.width + 5, player.y + player.height / 2);
         }
 
-        // お助けキャラを描画
         if (helper.isVisible && assetsLoaded) {
             ctx.drawImage(helperImage, helper.x, helper.y, helper.width, helper.height);
         }
@@ -279,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
         openingScreen.classList.remove('active');
         gameScreen.classList.add('active');
-        // 全てのアセットがロードされていればゲーム開始、そうでなければロード完了後に開始
         if (assetsLoaded) {
             gameLoop(); 
         }
@@ -295,7 +289,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { once: true });
     
-    // assetLoadedは画像読み込み後に呼び出される
-    // openingScreen.classList.add('active'); はDOMContentLoadedで実行
     openingScreen.classList.add('active');
 });
