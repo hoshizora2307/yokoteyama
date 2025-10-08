@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerLevelDisplay = document.getElementById('player-level');
     const playerExpDisplay = document.getElementById('player-exp');
     const playerMaxExpDisplay = document.getElementById('player-max-exp');
+    const levelUpPopup = document.getElementById('level-up-popup');
+    const levelUpNumber = document.getElementById('level-up-number');
     
     const playerImage = new Image();
     playerImage.src = 'takase02.png';
@@ -77,13 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function levelUp() {
         player.level++;
         player.exp -= player.maxExp;
-        player.maxExp = Math.floor(player.maxExp * 1.5); // 必要な経験値を1.5倍に
+        player.maxExp = Math.floor(player.maxExp * 1.5);
         
-        // 能力値の強化
         player.attackPower++;
         player.jumpPower += 0.1;
 
-        console.log(`Level Up! 現在のレベル: ${player.level}, 攻撃力: ${player.attackPower}, ジャンプ力: ${player.jumpPower}`);
+        // ポップアップを表示
+        levelUpNumber.textContent = player.level;
+        levelUpPopup.classList.add('visible');
+        
+        // 2秒後にポップアップを非表示にする
+        setTimeout(() => {
+            levelUpPopup.classList.remove('visible');
+        }, 2000);
     }
 
     // UIの更新関数
@@ -118,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (!player.isJumping) {
             player.isJumping = true;
-            // ジャンプ力に合わせて初速を調整
             player.velocityY = -gameCanvas.height / (25 / player.jumpPower);
         }
     });
@@ -130,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
             player.isAttacking = true;
             player.attackTimer = 15;
             
-            // 攻撃時に経験値を仮で追加
             player.exp += 20;
             if (player.exp >= player.maxExp) {
                 levelUp();
