@@ -20,6 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const helperImage = new Image();
     helperImage.src = 'saisu01.png';
 
+    let assetsLoadedCount = 0;
+    const totalAssets = 2;
+
+    function assetLoaded() {
+        assetsLoadedCount++;
+        if (assetsLoadedCount === totalAssets) {
+            // すべてのアセットが読み込まれたらゲーム開始
+            startGame();
+        }
+    }
+
+    playerImage.onload = assetLoaded;
+    playerImage.onerror = () => { console.error("Failed to load player image: takase02.png"); assetLoaded(); };
+    helperImage.onload = assetLoaded;
+    helperImage.onerror = () => { console.error("Failed to load helper image: saisu01.png"); assetLoaded(); };
+
     // 画面サイズに合わせてキャンバスを調整
     function resizeCanvas() {
         const aspectRatio = 800 / 400;
@@ -243,19 +259,18 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(gameLoop);
     }
     
-    // ゲームを自動的に開始
     function startGame() {
-        gameLoop(); 
-        openingBGM.pause();
-        gameBGM.play();
+        // BGMを再生
+        gameBGM.play().catch(e => {
+            console.error("BGM再生に失敗しました", e);
+        });
+        gameLoop();
     }
 
-    // ユーザーの最初の操作でBGMを再生
+    // ユーザーの最初の操作でゲームを開始し、BGMを再生
     document.body.addEventListener('touchstart', () => {
-        if (openingBGM.paused) {
-            openingBGM.play().catch(e => console.error(e));
-        }
+        startGame();
     }, { once: true });
     
-    startGame();
+    gameScreen.classList.add('active');
 });
