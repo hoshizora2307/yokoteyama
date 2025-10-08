@@ -143,7 +143,7 @@ h2 {
 #game-screen {
     flex-direction: column;
     background-color: #333;
-    position: relative; /* 子要素を配置するため */
+    position: relative;
 }
 
 #status-panel {
@@ -164,6 +164,42 @@ h2 {
 }
 
 #status-panel span {
+    color: #ffea00;
+}
+
+/* レベルアップポップアップ */
+#level-up-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 3px solid #ffea00;
+    padding: 30px 50px;
+    border-radius: 15px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255, 234, 0, 0.8);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    z-index: 50;
+    pointer-events: none; /* クリックを透過させる */
+}
+
+#level-up-popup.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#level-up-popup p {
+    margin: 0;
+    font-size: 2em;
+    text-shadow: 0 0 10px #ffea00;
+}
+
+#level-up-number {
+    font-size: 3em;
     color: #ffea00;
 }
 
