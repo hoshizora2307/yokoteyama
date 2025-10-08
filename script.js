@@ -10,22 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // プレイヤー画像
     const playerImage = new Image();
     playerImage.src = 'takase02.png';
-    // 画像が読み込まれるまでゲームループを開始しないようにするためのフラグ
     let assetsLoaded = false; 
 
     // 画面サイズに合わせてキャンバスを調整
     function resizeCanvas() {
-        const aspectRatio = 800 / 400; // ゲームの理想的な縦横比
+        const aspectRatio = 800 / 400;
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
         let newWidth, newHeight;
 
         if (windowWidth / windowHeight > aspectRatio) {
-            // ウィンドウが横長すぎる場合
             newHeight = windowHeight * 0.9;
             newWidth = newHeight * aspectRatio;
         } else {
-            // ウィンドウが縦長すぎる場合
             newWidth = windowWidth * 0.9;
             newHeight = newWidth / aspectRatio;
         }
@@ -33,22 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
         gameCanvas.width = newWidth;
         gameCanvas.height = newHeight;
         
-        // プレイヤーの初期位置も再調整
         player.x = gameCanvas.width / 5;
         player.y = gameCanvas.height - player.height;
     }
     
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas(); // 初回ロード時にも実行
+    resizeCanvas();
 
     // プレイヤーオブジェクト
     const player = {
         x: gameCanvas.width / 5,
-        y: gameCanvas.height - 50, // 初期位置は地面から少し上
-        width: 40, // 画像に合わせて調整
-        height: 40, // 画像に合わせて調整
+        y: gameCanvas.height - 50,
+        width: 40,
+        height: 40,
         velocityY: 0,
         isJumping: false,
+        isAttacking: false, // 攻撃中かどうかの状態
+        attackTimer: 0,
         speed: 5
     };
 
@@ -90,13 +88,21 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (!player.isJumping) {
             player.isJumping = true;
-            player.velocityY = -gameCanvas.height / 25; // ジャンプの初速
+            player.velocityY = -gameCanvas.height / 25;
+        }
+    });
+    
+    const attackButton = document.getElementById('attack-button');
+    attackButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!player.isAttacking) {
+            player.isAttacking = true;
+            player.attackTimer = 15; // 攻撃の持続フレーム数（15フレーム）
         }
     });
 
     // ゲームの更新
     function update() {
-        // プレイヤーの左右移動（タッチ操作）
         if (touch.moveRight) {
             background.x -= background.speed;
         }
@@ -104,34 +110,44 @@ document.addEventListener('DOMContentLoaded', () => {
             background.x += background.speed;
         }
 
-        // プレイヤーのジャンプと重力
         player.y += player.velocityY;
-        player.velocityY += gameCanvas.height / 500; // 重力
+        player.velocityY += gameCanvas.height / 500;
 
-        // 地面との衝突判定
         if (player.y > gameCanvas.height - player.height) {
             player.y = gameCanvas.height - player.height;
             player.isJumping = false;
             player.velocityY = 0;
         }
+        
+        // 攻撃タイマーの更新
+        if (player.isAttacking) {
+            player.attackTimer--;
+            if (player.attackTimer <= 0) {
+                player.isAttacking = false;
+            }
+        }
     }
 
     // ゲームの描画
     function draw() {
-        // 背景を描画 (横スクロール)
         ctx.fillStyle = '#5c628f';
         ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
         
-        // 簡易的な地面の描画
         ctx.fillStyle = '#4682b4';
         ctx.fillRect(0, gameCanvas.height - 10, gameCanvas.width, 10);
         
-        // プレイヤーを描画 (画像)
-        if (assetsLoaded) { // 画像が読み込まれていれば描画
+        // プレイヤーを描画
+        if (assetsLoaded) {
             ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
-        } else { // 読み込み中は仮の四角形を描画
+        } else {
             ctx.fillStyle = '#ff6347';
             ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
+        
+        // 攻撃中の描画
+        if (player.isAttacking) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillRect(player.x + player.width, player.y, 20, player.height);
         }
     }
 
@@ -146,43 +162,36 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
         openingScreen.classList.remove('active');
         gameScreen.classList.add('active');
-        if (assetsLoaded) { // アセットが読み込まれてからゲームを開始
+        if (assetsLoaded) {
             gameLoop(); 
         } else {
-            // アセット読み込み中であれば、読み込み完了後にゲームループ開始
             playerImage.onload = () => {
                 assetsLoaded = true;
                 gameLoop();
             };
         }
         
-        // BGMを切り替える
         openingBGM.pause();
         gameBGM.play();
     });
 
     // iOS/iPadOSの制限に対応
-    // ユーザーの最初の操作でBGMを再生
     document.body.addEventListener('touchstart', () => {
         if (openingBGM.paused) {
             openingBGM.play().catch(e => console.error(e));
         }
     }, { once: true });
     
-    // 画像が読み込まれたらフラグを立てる
     playerImage.onload = () => {
         assetsLoaded = true;
-        // もしすでにゲーム画面がアクティブなら、描画を更新するために一度描画を呼び出す
         if (gameScreen.classList.contains('active')) {
             draw(); 
         }
     };
     playerImage.onerror = () => {
         console.error("Failed to load player image: takase02.png");
-        // 画像読み込み失敗時も、ゲームは進行させるためフラグをtrueに
         assetsLoaded = true;
     };
 
-    // 初期表示：オープニング画面をアクティブに
     openingScreen.classList.add('active');
 });
