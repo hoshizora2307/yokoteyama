@@ -111,15 +111,12 @@ canvas {
 .controls {
     position: absolute;
     bottom: 20px;
-    left: 20px;
+    right: 20px;
     display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    padding-right: 20px;
-    box-sizing: border-box;
+    gap: 15px;
 }
 
-#jump-button {
+.controls button {
     background-color: #ff6347;
     border: none;
     color: white;
@@ -129,8 +126,9 @@ canvas {
     font-size: 1.2em;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s;
+    cursor: pointer;
 }
 
-#jump-button:active {
+.controls button:active {
     transform: scale(0.9);
 }
