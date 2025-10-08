@@ -9,16 +9,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 画面サイズに合わせてキャンバスを調整
     function resizeCanvas() {
-        if (window.innerWidth / window.innerHeight > 800 / 400) {
-            gameCanvas.height = window.innerHeight * 0.8;
-            gameCanvas.width = gameCanvas.height * 2;
+        const aspectRatio = 800 / 400; // ゲームの理想的な縦横比
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        let newWidth, newHeight;
+
+        if (windowWidth / windowHeight > aspectRatio) {
+            // ウィンドウが横長すぎる場合
+            newHeight = windowHeight * 0.9;
+            newWidth = newHeight * aspectRatio;
         } else {
-            gameCanvas.width = window.innerWidth * 0.9;
-            gameCanvas.height = gameCanvas.width / 2;
+            // ウィンドウが縦長すぎる場合
+            newWidth = windowWidth * 0.9;
+            newHeight = newWidth / aspectRatio;
         }
+
+        gameCanvas.width = newWidth;
+        gameCanvas.height = newHeight;
+        
+        // プレイヤーの初期位置も再調整
+        player.x = gameCanvas.width / 5;
+        player.y = gameCanvas.height - player.height;
     }
+    
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    resizeCanvas(); // 初回ロード時にも実行
 
     // プレイヤーオブジェクト
     const player = {
