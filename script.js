@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameCanvas = document.getElementById('gameCanvas');
     const ctx = gameCanvas.getContext('2d');
     
-    // プレイヤー画像
     const playerImage = new Image();
     playerImage.src = 'takase02.png';
     let assetsLoaded = false; 
@@ -97,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (!player.isAttacking) {
             player.isAttacking = true;
-            player.attackTimer = 15; // 攻撃の持続フレーム数（15フレーム）
+            player.attackTimer = 15;
         }
     });
 
@@ -119,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
             player.velocityY = 0;
         }
         
-        // 攻撃タイマーの更新
         if (player.isAttacking) {
             player.attackTimer--;
             if (player.attackTimer <= 0) {
@@ -136,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = '#4682b4';
         ctx.fillRect(0, gameCanvas.height - 10, gameCanvas.width, 10);
         
-        // プレイヤーを描画
         if (assetsLoaded) {
             ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
         } else {
@@ -144,9 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillRect(player.x, player.y, player.width, player.height);
         }
         
-        // 攻撃中の描画 (星マーク)
         if (player.isAttacking) {
-            ctx.font = `${player.height * 0.8}px Arial`; // フォントサイズをプレイヤーの高さに合わせる
+            ctx.font = `${player.height * 0.8}px Arial`;
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             ctx.fillText('⭐', player.x + player.width + 5, player.y + player.height / 2);
@@ -173,11 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
         
+        // BGMを切り替える
         openingBGM.pause();
         gameBGM.play();
     });
 
-    // iOS/iPadOSの制限に対応
+    // ユーザーの最初の操作でBGMを再生
     document.body.addEventListener('touchstart', () => {
         if (openingBGM.paused) {
             openingBGM.play().catch(e => console.error(e));
