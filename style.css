@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* 画面全体のスクロールを無効化 */
+    overflow: hidden;
 }
 
 body {
@@ -32,7 +32,7 @@ body {
     transition: opacity 1s ease-in-out;
     opacity: 0;
     visibility: hidden;
-    overflow: hidden; /* 各画面内でのスクロールも無効化 */
+    overflow: hidden;
 }
 
 .screen.active {
