@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openingScreen = document.getElementById('opening-screen');
     const gameScreen = document.getElementById('game-screen');
     const startButton = document.getElementById('start-button');
+    const openingBGM = document.getElementById('opening-bgm');
     const gameBGM = document.getElementById('game-bgm');
     const gameCanvas = document.getElementById('gameCanvas');
     const ctx = gameCanvas.getContext('2d');
@@ -122,10 +123,19 @@ document.addEventListener('DOMContentLoaded', () => {
         openingScreen.classList.remove('active');
         gameScreen.classList.add('active');
         gameLoop(); // ゲームループを開始
-
-        // BGMを再生
+        
+        // BGMを切り替える
+        openingBGM.pause();
         gameBGM.play();
     });
+
+    // iOS/iPadOSの制限に対応
+    // ユーザーの最初の操作でBGMを再生
+    document.body.addEventListener('touchstart', () => {
+        if (openingBGM.paused) {
+            openingBGM.play().catch(e => console.error(e));
+        }
+    }, { once: true });
     
     // 初期表示：オープニング画面をアクティブに
     openingScreen.classList.add('active');
