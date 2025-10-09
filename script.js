@@ -4,26 +4,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameCanvas = document.getElementById('gameCanvas');
     const ctx = gameCanvas.getContext('2d');
     
+    // UI要素
     const playerLevelDisplay = document.getElementById('player-level');
     const playerExpDisplay = document.getElementById('player-exp');
     const playerMaxExpDisplay = document.getElementById('player-max-exp');
     const levelUpPopup = document.getElementById('level-up-popup');
     const levelUpNumber = document.getElementById('level-up-number');
     
+    // プレイヤー画像
     const playerImage = new Image();
     playerImage.src = 'takase02.png';
     
+    // お助けキャラ画像
     const helperImage = new Image();
     helperImage.src = 'saisu01.png';
 
     let assetsLoadedCount = 0;
     const totalAssets = 2; // takase02.png, saisu01.png
+    let isGameStarted = false; // ゲームが開始されたかどうかのフラグ
 
     function assetLoaded() {
         assetsLoadedCount++;
         if (assetsLoadedCount === totalAssets) {
-            console.log("All assets loaded. Starting game.");
-            startGame();
+            console.log("All assets loaded. Waiting for user interaction to start game.");
         }
     }
     
@@ -116,9 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateUI() {
-        playerLevelDisplay.textContent = player.level;
-        playerExpDisplay.textContent = player.exp;
-        playerMaxExpDisplay.textContent = player.maxExp;
+        if (playerLevelDisplay && playerExpDisplay && playerMaxExpDisplay) {
+            playerLevelDisplay.textContent = player.level;
+            playerExpDisplay.textContent = player.exp;
+            playerMaxExpDisplay.textContent = player.maxExp;
+        }
     }
 
     gameCanvas.addEventListener('touchstart', (e) => {
@@ -141,27 +146,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const jumpButton = document.getElementById('jump-button');
-    jumpButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (!player.isJumping) {
-            player.isJumping = true;
-            player.velocityY = -gameCanvas.height / (25 / player.jumpPower);
-        }
-    });
+    if (jumpButton) {
+        jumpButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (!player.isJumping) {
+                player.isJumping = true;
+                player.velocityY = -gameCanvas.height / (25 / player.jumpPower);
+            }
+        });
+    }
     
     const attackButton = document.getElementById('attack-button');
-    attackButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (!player.isAttacking) {
-            player.isAttacking = true;
-            player.attackTimer = 15;
-            
-            player.exp += 20;
-            if (player.exp >= player.maxExp) {
-                levelUp();
+    if (attackButton) {
+        attackButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (!player.isAttacking) {
+                player.isAttacking = true;
+                player.attackTimer = 15;
+                
+                player.exp += 20;
+                if (player.exp >= player.maxExp) {
+                    levelUp();
+                }
             }
-        }
-    });
+        });
+    }
 
     function update() {
         if (touch.moveRight) {
@@ -244,6 +253,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function startGame() {
+        if (isGameStarted) return;
+        isGameStarted = true;
+
         // BGMを再生
         gameBGM.play().catch(e => {
             console.error("BGM再生に失敗しました", e);
@@ -252,9 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ユーザー操作を待ってゲームを開始
-    document.body.addEventListener('touchstart', () => {
-        startGame();
-    }, { once: true });
+    document.body.addEventListener('touchstart', startGame, { once: true });
 
+    // HTMLが読み込まれたらゲーム画面をアクティブにする
     gameScreen.classList.add('active');
 });
