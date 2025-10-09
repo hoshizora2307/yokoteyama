@@ -35,6 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
     helperImage.onload = assetLoaded;
     helperImage.onerror = () => { console.error("Failed to load helper image: saisu01.png"); assetLoaded(); };
     
+    const ground = {
+        height: 10
+    };
+
+    const player = {
+        x: 0, // resizeCanvasで初期化
+        y: 0, // resizeCanvasで初期化
+        width: 40,
+        height: 40,
+        velocityY: 0,
+        isJumping: false,
+        isAttacking: false,
+        attackTimer: 0,
+        speed: 5,
+        level: 1,
+        exp: 0,
+        maxExp: 100,
+        attackPower: 1,
+        jumpPower: 1,
+        isInvincible: false,
+        flickerTimer: 0
+    };
+    
     function resizeCanvas() {
         const aspectRatio = 800 / 400;
         const windowWidth = window.innerWidth;
@@ -53,30 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
         gameCanvas.height = newHeight;
         
         player.x = gameCanvas.width / 5;
-        player.y = gameCanvas.height - player.height;
+        player.y = gameCanvas.height - player.height - ground.height;
     }
-    
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
 
-    const player = {
-        x: gameCanvas.width / 5,
-        y: gameCanvas.height - 50,
-        width: 40,
-        height: 40,
-        velocityY: 0,
-        isJumping: false,
-        isAttacking: false,
-        attackTimer: 0,
-        speed: 5,
-        level: 1,
-        exp: 0,
-        maxExp: 100,
-        attackPower: 1,
-        jumpPower: 1,
-        isInvincible: false,
-        flickerTimer: 0
-    };
+    window.addEventListener('resize', resizeCanvas);
 
     const helper = {
         x: 0,
@@ -89,12 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initialRespawnTime: 60 * 60
     };
     helper.respawnTimer = helper.initialRespawnTime;
-
-
-    const background = {
-        x: 0,
-        speed: 1
-    };
 
     const touch = {
         moveRight: false,
@@ -173,18 +170,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function update() {
+        // プレイヤーの左右移動
         if (touch.moveRight) {
-            background.x -= background.speed;
+            player.x += player.speed;
         }
         if (touch.moveLeft) {
-            background.x += background.speed;
+            player.x -= player.speed;
         }
 
+        // 画面端の処理
+        if (player.x < 0) {
+            player.x = 0;
+        }
+        if (player.x + player.width > gameCanvas.width) {
+            player.x = gameCanvas.width - player.width;
+        }
+
+        // プレイヤーのジャンプと重力
         player.y += player.velocityY;
         player.velocityY += gameCanvas.height / 500;
 
-        if (player.y > gameCanvas.height - player.height) {
-            player.y = gameCanvas.height - player.height;
+        // 地面との衝突判定
+        if (player.y > gameCanvas.height - player.height - ground.height) {
+            player.y = gameCanvas.height - player.height - ground.height;
             player.isJumping = false;
             player.velocityY = 0;
         }
@@ -223,17 +231,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function draw() {
+        // 背景
         ctx.fillStyle = '#5c628f';
         ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
         
+        // 地面
         ctx.fillStyle = '#4682b4';
-        ctx.fillRect(0, gameCanvas.height - 10, gameCanvas.width, 10);
+        ctx.fillRect(0, gameCanvas.height - ground.height, gameCanvas.width, ground.height);
         
+        // プレイヤー
         if (player.isInvincible && Math.floor(player.flickerTimer / 5) % 2 === 0) {
+            // 点滅（描画しない）
         } else {
             ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
         }
         
+        // 攻撃エフェクト
         if (player.isAttacking) {
             ctx.font = `${player.height * 0.8}px Arial`;
             ctx.textAlign = 'left';
@@ -241,6 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText('⭐', player.x + player.width + 5, player.y + player.height / 2);
         }
 
+        // お助けキャラ
         if (helper.isVisible) {
             ctx.drawImage(helperImage, helper.x, helper.y, helper.width, helper.height);
         }
@@ -262,6 +276,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         gameLoop();
     }
+    
+    // 初期化処理
+    resizeCanvas();
+    updateUI();
 
     // ユーザー操作を待ってゲームを開始
     document.body.addEventListener('touchstart', startGame, { once: true });
