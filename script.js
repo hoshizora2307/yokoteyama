@@ -1,42 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
     const gameScreen = document.getElementById('game-screen');
-    const openingBGM = document.getElementById('opening-bgm');
     const gameBGM = document.getElementById('game-bgm');
     const gameCanvas = document.getElementById('gameCanvas');
     const ctx = gameCanvas.getContext('2d');
     
-    // UI要素
     const playerLevelDisplay = document.getElementById('player-level');
     const playerExpDisplay = document.getElementById('player-exp');
     const playerMaxExpDisplay = document.getElementById('player-max-exp');
     const levelUpPopup = document.getElementById('level-up-popup');
     const levelUpNumber = document.getElementById('level-up-number');
     
-    // プレイヤー画像
     const playerImage = new Image();
     playerImage.src = 'takase02.png';
     
-    // お助けキャラ画像
     const helperImage = new Image();
     helperImage.src = 'saisu01.png';
 
     let assetsLoadedCount = 0;
-    const totalAssets = 2;
+    const totalAssets = 2; // takase02.png, saisu01.png
 
     function assetLoaded() {
         assetsLoadedCount++;
         if (assetsLoadedCount === totalAssets) {
-            // すべてのアセットが読み込まれたらゲーム開始
+            console.log("All assets loaded. Starting game.");
             startGame();
         }
     }
-
+    
     playerImage.onload = assetLoaded;
     playerImage.onerror = () => { console.error("Failed to load player image: takase02.png"); assetLoaded(); };
     helperImage.onload = assetLoaded;
     helperImage.onerror = () => { console.error("Failed to load helper image: saisu01.png"); assetLoaded(); };
-
-    // 画面サイズに合わせてキャンバスを調整
+    
     function resizeCanvas() {
         const aspectRatio = 800 / 400;
         const windowWidth = window.innerWidth;
@@ -61,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // プレイヤーオブジェクト
     const player = {
         x: gameCanvas.width / 5,
         y: gameCanvas.height - 50,
@@ -81,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         flickerTimer: 0
     };
 
-    // お助けキャラオブジェクト
     const helper = {
         x: 0,
         y: 0,
@@ -95,20 +88,17 @@ document.addEventListener('DOMContentLoaded', () => {
     helper.respawnTimer = helper.initialRespawnTime;
 
 
-    // 背景オブジェクト
     const background = {
         x: 0,
         speed: 1
     };
 
-    // タッチ入力の状態
     const touch = {
         moveRight: false,
         moveLeft: false,
         isJumping: false
     };
 
-    // レベルアップの関数
     function levelUp() {
         player.level++;
         player.exp -= player.maxExp;
@@ -125,14 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     }
 
-    // UIの更新関数
     function updateUI() {
         playerLevelDisplay.textContent = player.level;
         playerExpDisplay.textContent = player.exp;
         playerMaxExpDisplay.textContent = player.maxExp;
     }
 
-    // タッチイベントリスナー
     gameCanvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         const touchX = e.touches[0].clientX;
@@ -175,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ゲームの更新
     function update() {
         if (touch.moveRight) {
             background.x -= background.speed;
@@ -200,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // お助けキャラのロジック
         if (helper.isVisible) {
             helper.displayTimer--;
             if (helper.displayTimer <= 0) {
@@ -227,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateUI();
     }
 
-    // ゲームの描画
     function draw() {
         ctx.fillStyle = '#5c628f';
         ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
@@ -252,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ゲームループ
     function gameLoop() {
         update();
         draw();
@@ -267,10 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
         gameLoop();
     }
 
-    // ユーザーの最初の操作でゲームを開始し、BGMを再生
+    // ユーザー操作を待ってゲームを開始
     document.body.addEventListener('touchstart', () => {
         startGame();
     }, { once: true });
-    
+
     gameScreen.classList.add('active');
 });
