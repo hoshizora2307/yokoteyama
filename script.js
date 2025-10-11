@@ -266,14 +266,19 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(gameLoop);
     }
     
-    function startGame() {
+    // ▼▼▼ この関数を修正 ▼▼▼
+    async function startGame() {
         if (isGameStarted) return;
         isGameStarted = true;
 
-        // BGMを再生
-        gameBGM.play().catch(e => {
-            console.error("BGM再生に失敗しました", e);
-        });
+        // BGMの再生を試みる（より確実な方法）
+        try {
+            // play()はPromiseを返すため、awaitで成功を待つ
+            await gameBGM.play();
+        } catch (error) {
+            console.error("BGMの再生に失敗しました。ブラウザのポリシーによる可能性があります。", error);
+        }
+
         gameLoop();
     }
     
