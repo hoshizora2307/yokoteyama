@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isVisible: false,
         displayTimer: 0,
         respawnTimer: 0,
-        initialRespawnTime: 60 * 60
+        initialRespawnTime: 60 * 5 // 5秒で「お助けキャラ」が登場
     };
     helper.respawnTimer = helper.initialRespawnTime;
 
