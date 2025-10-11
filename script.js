@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         flickerTimer: 0
     };
     
+    // ▼▼▼ この関数を修正 ▼▼▼
     function resizeCanvas() {
         const aspectRatio = 800 / 400;
         const windowWidth = window.innerWidth;
@@ -65,10 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let newWidth, newHeight;
 
         if (windowWidth / windowHeight > aspectRatio) {
-            newHeight = windowHeight * 0.9;
+            newHeight = windowHeight; // 0.9を削除
             newWidth = newHeight * aspectRatio;
         } else {
-            newWidth = windowWidth * 0.9;
+            newWidth = windowWidth; // 0.9を削除
             newHeight = newWidth / aspectRatio;
         }
 
@@ -266,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(gameLoop);
     }
     
-    // ▼▼▼ この関数を修正 ▼▼▼
     async function startGame() {
         if (isGameStarted) return;
         isGameStarted = true;
