@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
         flickerTimer: 0
     };
     
-    // ▼▼▼ この関数を修正 ▼▼▼
     function resizeCanvas() {
         const aspectRatio = 800 / 400;
         const windowWidth = window.innerWidth;
@@ -66,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let newWidth, newHeight;
 
         if (windowWidth / windowHeight > aspectRatio) {
-            newHeight = windowHeight; // 0.9を削除
+            newHeight = windowHeight;
             newWidth = newHeight * aspectRatio;
         } else {
-            newWidth = windowWidth; // 0.9を削除
+            newWidth = windowWidth;
             newHeight = newWidth / aspectRatio;
         }
 
@@ -82,15 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', resizeCanvas);
 
+    // ▼▼▼ このオブジェクトを修正 ▼▼▼
     const helper = {
         x: 0,
         y: 0,
-        width: 30,
-        height: 30,
+        width: 60,  // サイズを大きく変更
+        height: 60, // サイズを大きく変更
         isVisible: false,
         displayTimer: 0,
         respawnTimer: 0,
-        initialRespawnTime: 60 * 5 // 5秒で「お助けキャラ」が登場
+        initialRespawnTime: 60 * 3 // 3秒で登場するように変更
     };
     helper.respawnTimer = helper.initialRespawnTime;
 
@@ -217,14 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             helper.respawnTimer--;
+            // ▼▼▼ このブロックを修正 ▼▼▼
             if (helper.respawnTimer <= 0) {
                 helper.isVisible = true;
-                helper.displayTimer = 60 * 1.5;
-                helper.x = player.x + (Math.random() * player.width * 2) - (player.width / 2);
-                helper.y = player.y - (Math.random() * player.height) - helper.height;
-                if (helper.y < 0) helper.y = 0;
-                if (helper.x < 0) helper.x = 0;
-                if (helper.x + helper.width > gameCanvas.width) helper.x = gameCanvas.width - helper.width;
+                helper.displayTimer = 60 * 3; // 表示時間も3秒に延長
+                
+                // 画面の中央に出現させる
+                helper.x = (gameCanvas.width - helper.width) / 2;
+                helper.y = (gameCanvas.height - helper.height) / 2;
             }
         }
 
